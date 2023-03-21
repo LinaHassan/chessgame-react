@@ -1,0 +1,82 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.board {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(58, 26, 12, 1);
+  /* grid-template-columns: repeat(8, 50px );
+  grid-template-rows: repeat(8, 50px); */
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+.even-card {
+  background-color: rgba(187, 153, 121, 1);
+  padding: 1rem;
+  color: white;
+  padding: 0.5rem;
+  border-color: rgba(187, 153, 121, 1);
+}
+
+.odd-card {
+  background-color: #f7f7f7;
+  padding: 0.5rem;
+  border-color: #f7f7f7;
+}
+img {
+  width: 30px;
+  height: 30px;
+  justify-self: center;
+}
+.board-square {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+.board-row {
+  display: flex;
+}
+.highlighted {
+  background-color: #e99f9f;
+}
+.board_turn {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  width: 20vw;
+  margin-top: 1rem;
+  align-self: center;
+}
+.board_gameOver {
+  padding: 1rem;
+  background-color: red;
+  border-radius: 8px;
+  width: 20vw;
+  margin-top: 1rem;
+  align-self: center;
+}
+.board_history {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 30px;
+  background-color: rgba(58, 26, 12, 1);
+  color: white;
+  justify-items: center;
+  align-items: start;
+  width: 20vw;
+  padding: 1rem;
+}
+.game {
+  display: flex;
+  gap: 1rem;
+}
