@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeMove } from "../../../App/reducer";
 import { gameOver } from "../../../App/reducer";
 import { selectedPiece } from "../../../App/reducer";
+import { CalculatePossibleMoves } from "../../../services/calculatePossibleMoves";
 import { calculateMoves } from "../../../App/reducer";
 
 const Board = () => {
@@ -14,7 +15,16 @@ const Board = () => {
 
   const selected = (piece, rowIndex, colIndex) => {
     dispatch(selectedPiece(piece));
-    dispatch(calculateMoves(piece, rowIndex, colIndex));
+    const possibleMoves = CalculatePossibleMoves(
+      piece,
+      board,
+      turn,
+      rowIndex,
+      colIndex
+    );
+    if (possibleMoves)
+      dispatch(calculateMoves(possibleMoves, rowIndex, colIndex));
+
     dispatch(gameOver());
   };
 

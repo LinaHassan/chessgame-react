@@ -1,4 +1,4 @@
-export const calculateMove = (
+export const displayMove = (
   board,
   piece,
   newRowIndex,

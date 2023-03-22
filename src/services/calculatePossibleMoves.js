@@ -1,84 +1,26 @@
-export const calculatePossibleMoves = (
+export const CalculatePossibleMoves = (
   pieceType,
-  rowIndex,
-  colIndex,
   board,
-  turn
+  turn,
+  rowIndex,
+  colIndex
 ) => {
   const possibleMoves = [];
+
   switch (pieceType) {
     case "WP":
       if (turn === "Black") break;
-      if (rowIndex === 6) {
-        if (board[rowIndex - 1][colIndex] === "") {
-          possibleMoves.push([rowIndex - 1, colIndex]);
 
-          if (board[rowIndex - 2][colIndex] === "")
-            possibleMoves.push([rowIndex - 2, colIndex]);
-        }
-        if (
-          board[rowIndex - 1][colIndex + 1]?.charAt(0) === "B" &&
-          board[rowIndex - 1][colIndex + 1]
-        )
-          possibleMoves.push([rowIndex - 1, colIndex + 1]);
-        if (
-          board[rowIndex - 1][colIndex - 1]?.charAt(0) === "B" &&
-          board[rowIndex - 1][colIndex - 1]
-        ) {
-          possibleMoves.push([rowIndex - 1, colIndex - 1]);
-        }
-      } else {
-        if (board[rowIndex - 1][colIndex] === "")
-          possibleMoves.push([rowIndex - 1, colIndex]);
-        if (
-          board[rowIndex - 1][colIndex + 1]?.charAt(0) === "B" &&
-          board[rowIndex - 1][colIndex + 1]
-        )
-          possibleMoves.push([rowIndex - 1, colIndex + 1]);
-        if (
-          board[rowIndex - 1][colIndex - 1]?.charAt(0) === "B" &&
-          board[rowIndex - 1][colIndex - 1]
-        ) {
-          possibleMoves.push([rowIndex - 1, colIndex - 1]);
-        }
-      }
+      pownForward(board, possibleMoves, rowIndex, colIndex, pieceType);
+      pownRight(board, possibleMoves, rowIndex, colIndex, pieceType);
+      pownLeft(board, possibleMoves, rowIndex, colIndex, pieceType);
 
       break;
     case "BP":
       if (turn === "White") break;
-      if (rowIndex === 1) {
-        if (board[rowIndex + 1][colIndex] === "")
-          possibleMoves.push([rowIndex + 1, colIndex]);
-
-        if (
-          board[rowIndex + 2][colIndex] === "" &&
-          board[rowIndex + 1][colIndex] === ""
-        )
-          possibleMoves.push([rowIndex + 2, colIndex]);
-        if (
-          board[rowIndex + 1][colIndex + 1]?.charAt(0) === "W" &&
-          board[rowIndex + 1][colIndex + 1]
-        )
-          possibleMoves.push([rowIndex + 1, colIndex + 1]);
-        if (
-          board[rowIndex + 1][colIndex - 1]?.charAt(0) === "W" &&
-          board[rowIndex + 1][colIndex - 1]
-        )
-          possibleMoves.push([rowIndex - 1, colIndex - 1]);
-      } else {
-        if (board[rowIndex + 1][colIndex] === "")
-          possibleMoves.push([rowIndex + 1, colIndex]);
-        if (
-          board[rowIndex + 1][colIndex + 1]?.charAt(0) === "W" &&
-          board[rowIndex + 1][colIndex + 1]
-        )
-          possibleMoves.push([rowIndex + 1, colIndex + 1]);
-        if (
-          board[rowIndex + 1][colIndex - 1]?.charAt(0) === "W" &&
-          board[rowIndex + 1][colIndex - 1]
-        )
-          possibleMoves.push([rowIndex + 1, colIndex - 1]);
-      }
+      pownForward(board, possibleMoves, rowIndex, colIndex, pieceType);
+      pownRight(board, possibleMoves, rowIndex, colIndex, pieceType);
+      pownLeft(board, possibleMoves, rowIndex, colIndex, pieceType);
 
       break;
 
@@ -114,6 +56,7 @@ const forwardRight = (board, possibleMoves, rowIndex, colIndex, pieceType) => {
       colIndex + i > 7
     )
       break;
+
     if (board[rowIndex + i][colIndex + i] === "") {
       possibleMoves.push([rowIndex + i, colIndex + i]);
     } else if (board[rowIndex + i][colIndex + i]?.charAt(0) !== pieceType[0]) {
@@ -185,4 +128,45 @@ const backwardLeft = (board, possibleMoves, rowIndex, colIndex, pieceType) => {
       break;
     }
   }
+};
+const pownForward = (board, possibleMoves, rowIndex, colIndex, pieceType) => {
+  pieceType[0] === "B" ? rowIndex++ : rowIndex--;
+
+  if (
+    rowIndex + 1 === 6 &&
+    board[rowIndex][colIndex] === "" &&
+    pieceType[0] === "W"
+  ) {
+    if (board[rowIndex - 1][colIndex] === "")
+      possibleMoves.push([rowIndex - 1, colIndex]);
+  }
+
+  if (board[rowIndex][colIndex] === "")
+    possibleMoves.push([rowIndex, colIndex]);
+
+  if (
+    rowIndex - 1 === 1 &&
+    board[rowIndex][colIndex] === "" &&
+    pieceType[0] === "B"
+  ) {
+    if (board[rowIndex + 1][colIndex] === "")
+      possibleMoves.push([rowIndex + 1, colIndex]);
+  }
+};
+
+const pownRight = (board, possibleMoves, rowIndex, colIndex, pieceType) => {
+  pieceType[0] === "B" ? rowIndex++ : rowIndex--;
+  if (
+    board[rowIndex][colIndex + 1]?.charAt(0) !== pieceType[0] &&
+    board[rowIndex][colIndex + 1]
+  )
+    possibleMoves.push([rowIndex, colIndex + 1]);
+};
+const pownLeft = (board, possibleMoves, rowIndex, colIndex, pieceType) => {
+  pieceType[0] === "B" ? rowIndex++ : rowIndex--;
+  if (
+    board[rowIndex][colIndex - 1]?.charAt(0) !== pieceType[0] &&
+    board[rowIndex][colIndex - 1]
+  )
+    possibleMoves.push([rowIndex, colIndex - 1]);
 };

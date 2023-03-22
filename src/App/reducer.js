@@ -1,26 +1,6 @@
-import { calculatePossibleMoves } from "../services/calculatePossibleMoves";
 import { displayHistory } from "../services/displayHistory";
-import { calculateMove } from "../services/calculateMove";
-const initialBoardState = [
-  ["BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"],
-  ["BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"],
-  ["WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"],
-];
-
-const initialState = {
-  board: initialBoardState,
-  turn: "White",
-  selectedPiece: null,
-  currentIndex: [],
-  gameOver: false,
-  allPossibleMoves: [],
-  boardHistory: [],
-};
+import { displayMove } from "../services/displayMove";
+import { initialState } from "./initialState";
 
 export const SELECTED_PIECE = "SELECTED_PIECE";
 export const CALCULATE_MOVES = "CALCULATE_MOVES";
@@ -28,13 +8,13 @@ export const MAKE_MOVE = "MAKE_MOVE";
 export const GAME_OVER = "GAME_OVER";
 
 export const selectedPiece = (pieceType) => ({
-  type: "SELECTED_PIECE",
+  type: SELECTED_PIECE,
   payload: pieceType,
 });
-export function calculateMoves(pieceType, rowIndex, colIndex) {
+export function calculateMoves(possibleMoves, rowIndex, colIndex) {
   return {
     type: CALCULATE_MOVES,
-    payload: { pieceType, rowIndex, colIndex },
+    payload: { possibleMoves, rowIndex, colIndex },
   };
 }
 export function makeMove(newRowIndex, newcolIndex) {
@@ -61,7 +41,7 @@ export const reducer = (state = initialState, action) => {
         state.currentIndex,
         state.gameOver
       );
-      const newBoard = calculateMove(
+      const newBoard = displayMove(
         state.board,
         state.selectedPiece,
         newRowIndex,
@@ -78,16 +58,9 @@ export const reducer = (state = initialState, action) => {
       };
     case SELECTED_PIECE:
       return { ...state, selectedPiece: action.payload };
-    case CALCULATE_MOVES:
-      const { pieceType, rowIndex, colIndex } = action.payload;
-      const possibleMoves = calculatePossibleMoves(
-        pieceType,
-        rowIndex,
-        colIndex,
-        state.board,
-        state.turn
-      );
 
+    case CALCULATE_MOVES:
+      const { possibleMoves, rowIndex, colIndex } = action.payload;
       return {
         ...state,
         currentIndex: [rowIndex, colIndex],
